@@ -1,2 +1,3 @@
-package grp10.game.Controllers;public class WordController {
+package grp10.game.Controllers;
+public class WordController {
 }
