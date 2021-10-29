@@ -19,7 +19,7 @@ public class GameController {
     }
 
     @RequestMapping("/")
-    public String startPage(Model model){
+    public String homePage(Model model){
         //business logic
         // call method in service class
         List<Word> allWords = wordService.findAll();
