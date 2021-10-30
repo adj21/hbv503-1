@@ -1,34 +1,11 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://thymeleaf.org">
+<html xmlns:th="http://thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Time is running out!</title>
 </head>
 <body>
-
-<div th:switch="${words}">
-    <h2 th:case="null">No words yet!</h2>
-    <div th:case="*">
-        <h2>Words</h2>
-        <table>
-            <thead>
-            <tr>
-                <th>word</th>
-                <th>guessed?</th>
-                <th>Delete</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:each="word : ${words}">
-                <td th:text="${word.title}"></td>
-                <td th:text="${word.description}"></td>
-                <td><a th:href="@{/delete/{id}(id=${word.ID})}">Delete</a></td>
-            </tr>
-            </tbody>
-        </table>
-    </div>
-    <p><a href="/addword">Add a new word</a></p>
-</div>
-
+    <H1>Time is running out!</H1>
+    <p><a href="/startgame">Play!</a></p>
 </body>
 </html>

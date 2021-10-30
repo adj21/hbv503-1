@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="https://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Add a new Word</title>
+</head>
+<body>
+
+<form action="#" th:action="@{/addword}" th:object="${word}" method="post">
+    <label for="value">Word</label>
+    <input type="text" th:field="*{value}" id="value" placeholder="Word">
+    <span th:if="${#fields.hasErrors('value')}" th:errors="*{value}"></span>
+    <input type="submit" value="Add Word">
+</form>
+
+</body>
+</html>
