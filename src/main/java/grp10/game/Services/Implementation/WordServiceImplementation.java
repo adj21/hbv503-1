@@ -10,9 +10,9 @@ import java.util.List;
 
 @Service
 public class WordServiceImplementation implements WordService {
-    //ref to repository when JPA is up so javaspring can autowire it
+    //have an instance of/a reference to the repository when JPA is up so javaspring can autowire it
     private List<Word> wordRepository = new ArrayList<>();//temporary dummy repo
-    private int id_counter = 0;
+    private int id_counter = 0;//counter to create unique ID for all words of the database
 
     @Autowired
     public WordServiceImplementation() {

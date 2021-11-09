@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org"><head>
+    <meta charset="UTF-8">
+    <title>Turn</title>
+</head>
+<body>
+<h1>Round <span th:text="${session.game.currentRound}">round number</span></h1>
+<h2>Rules:</h2>
+<div th:switch="${session.game.currentRound}">
+    <p th:case="null">There was an error, go back to the homepage to restart the game</p>
+    <p th:case="1">Describe the word displayed on the screen to your teammates.
+        You cannot say words of the same family, words that sound similar,
+        translate, or spell the words. <br>
+        When you teammates have guessed the words, press "validate",
+        you can also skip a word by pressing the cross.
+    </p>
+</div>
+</body>
+</html>
