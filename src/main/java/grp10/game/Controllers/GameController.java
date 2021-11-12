@@ -29,25 +29,19 @@ public class GameController {
 
     /**
      * method called when accessing the homepage of the game
-     * @param model
      * @return home html template
      **/
     @RequestMapping("/")
-    public String homePage(Model model){
-        // call method (findAll) in service class (to get all words from database)
-        List<Word> allWords = wordService.findAll();
-        //add data (all words in the database) to model
-        model.addAttribute("words", allWords);
+    public String homePage(){
         return"home";
     }
 
     /**
-     * method called when clicking on "play!" link to start the game
-     * @param session
-     * @param model that stores all words
+     * GET method called when clicking on "play!" link to start the game
+     * @param session to add the game attribute
      * @return formTeams html template
      **/
-    @RequestMapping(value="/startgame", method = RequestMethod.GET) public String startGame(HttpSession session, Model model) {
+    @RequestMapping(value="/startgame", method = RequestMethod.GET) public String startGame(HttpSession session) {
         //business logic
         Game game = new Game();
         session.setAttribute("game", game); //stores the game object on the session
@@ -55,18 +49,30 @@ public class GameController {
     }
 
     /**
-     * method called when starting a round
+     * POST method called when starting a round
      * @param session that stores the game object
-     * @param model that stores all words
-     * @return round html template
+     * @return redirects to displayRound GET method
      **/
-    @RequestMapping(value="/round", method = RequestMethod.GET) public String displayRound(HttpSession session, Model model) {
+    @RequestMapping(value="/startRound", method = RequestMethod.POST) public String startRound(HttpSession session) {
         //business logic
         Game game = (Game) session.getAttribute("game");
         game.incrementCurrentRound(); //adds +1 to the CurrentRound attribute of the game (TODO should call method from service class do to this?)
-        //add game to the session (TODO should be added to the model instead? or also?)
+        //add game to the session
         session.setAttribute("game", game);
-        return "round";
+        return "redirect:/round";
+    }
+
+    /**
+     * GET method called when viewing the round page
+     * @param session that stores the game object
+     * @param model to transfer the round number to the view
+     * @return round html template
+     **/
+    @RequestMapping(value="/round", method = RequestMethod.GET) public String displayRound(HttpSession session, Model model) {
+        Game game = (Game) session.getAttribute("game");
+        //add round number to the model to be retrieved by the view
+        model.addAttribute("roundNumber", game.getCurrentRound());
+        return"round";
     }
 
     /**
@@ -84,21 +90,20 @@ public class GameController {
      * @param result TODO should tell us if there are errors in the form submitted, check newWord template
      * @return redirects to "/" URL (so calls homePage method), or returns newWord template if an error is caught in the form
      **/
-    @RequestMapping(value="/addword", method = RequestMethod.POST) public String addWord(Word word, BindingResult result, Model model) {
+    @RequestMapping(value="/addword", method = RequestMethod.POST) public String addWord(Word word, BindingResult result) {
         if(result.hasErrors()) return "newWord"; //reset page if error in form
         wordService.save(word); //otherwise save word
         return "redirect:/";
     }
 
     /**
-     * method to delete word from database, might not be needed!
+     * GET method to delete word from database, might not be needed!
      * @param id of the word to delete
-     * @param model that stores all words
      * @return redirects to "/" URL (so calls homePage method)
      **/
-    @RequestMapping(value="/delete/{id}", method = RequestMethod.GET) public String deleteWord(@PathVariable("id") long id, Model model) {
+    @RequestMapping(value="/delete/{id}", method = RequestMethod.GET) public String deleteWord(@PathVariable("id") long id) {
         Word wordToDelete = wordService.findByID(id); //finds word to delete in the database
-        wordService.delete(wordToDelete); //metod from service class to delete word
+        wordService.delete(wordToDelete); //method from service class to delete word
         return "redirect:/";
     }
 

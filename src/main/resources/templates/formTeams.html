@@ -2,9 +2,11 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Creating teams</title>
+    <title>Teams</title>
     <p>Make 2 teams</p>
-    <a th:href="@{/round}">Done!</a>
+    <form action="#" th:action="@{/startRound}" method="post">
+        <input type="submit" value="Done!"></input>
+    </form>
 </head>
 <body>
 
