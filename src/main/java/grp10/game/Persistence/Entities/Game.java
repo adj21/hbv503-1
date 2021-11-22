@@ -7,12 +7,14 @@ public class Game {
     private int teamTwoResults;
     private int currentRound;
     private List<Round> rounds;
+    private int playerTotal;
 
 
     public Game() {
         this.teamOneResults = 0;
         this.teamTwoResults = 0;
         this.currentRound = 0;
+        this.playerTotal = 0;
     }
 
     public List<Round> getRounds() {
@@ -22,6 +24,10 @@ public class Game {
     public void setRounds(List<Round> rounds) {
         this.rounds = rounds;
     }
+
+    public int getPlayerTotal() { return this.playerTotal; }
+
+    public void setPlayerTotal(int playerTotal) { this.playerTotal = playerTotal; }
 
     public int getTeamOneResults() {
         return teamOneResults;

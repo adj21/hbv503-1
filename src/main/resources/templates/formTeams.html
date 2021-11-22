@@ -1,11 +1,13 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="https://thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Teams</title>
     <p>Make 2 teams</p>
-    <form action="#" th:action="@{/startRound}" method="post">
-        <input type="submit" value="Done!"></input>
+    <p>Enter how many players there are total:</p>
+    <form action="#" th:action="@{/addFiveWords}" th:object="${game}" method="post">
+        <input type="text" name="player total:" id="playerTotal" th:field="*{playerTotal}"/>
+        <input type="submit" value="Done!">
     </form>
 </head>
 <body>
