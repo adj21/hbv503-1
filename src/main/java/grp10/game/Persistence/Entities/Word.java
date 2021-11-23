@@ -1,7 +1,14 @@
 package grp10.game.Persistence.Entities;
 
+import javax.persistence.*;
+
+@Entity
+@Table(name = "Words")
 public class Word {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long ID;
+
     private String value;
     private boolean guessed;
 
@@ -29,7 +36,7 @@ public class Word {
         this.value = value;
     }
 
-    public boolean isGuessed() {
+    public boolean getGuessed() {
         return guessed;
     }
 

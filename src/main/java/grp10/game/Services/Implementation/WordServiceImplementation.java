@@ -50,7 +50,7 @@ public class WordServiceImplementation implements WordService {
     public boolean isAllGuessed() {
         List<Word> allWords = wordRepository.findAll();
         for(Word w: allWords){
-            if(!w.isGuessed()) return false;
+            if(!w.getGuessed()) return false;
         }
         return true;
     }
