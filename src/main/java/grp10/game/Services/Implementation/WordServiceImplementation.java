@@ -18,11 +18,6 @@ public class WordServiceImplementation implements WordService {
         this.wordRepository = wordRepository;
     }
 
-    //@Override
-    //public Word getWords() {
-    //    return wordRepository.findAll();
-    //}
-
     @Override
     public Word getWord() {
         return wordRepository.findByGuessed(false).get(0);
@@ -46,12 +41,15 @@ public class WordServiceImplementation implements WordService {
 
     @Override
     public void setUnguessed(Word word) {
+        wordRepository.delete(word);
         word.setGuessed(false);
+        wordRepository.save(word);
     }
 
     @Override
     public boolean isAllGuessed() {
-        for(Word w: wordRepository){
+        List<Word> allWords = wordRepository.findAll();
+        for(Word w: allWords){
             if(!w.isGuessed()) return false;
         }
         return true;
@@ -59,19 +57,25 @@ public class WordServiceImplementation implements WordService {
 
     @Override
     public void setAllUnguessed() {
-        for(Word w: wordRepository){
+        List<Word> allWords = wordRepository.findAll();
+        for(Word w: allWords){
             w.setGuessed(false);
         }
+        wordRepository.deleteAll();
+        wordRepository.saveAll(allWords);
     }
 
     @Override
     public List<Word> findAll() {
-        return wordRepository;
+        return wordRepository.findAll();
     }
 
     @Override
     public Word findByID(long ID) {
-        return wordRepository.findById(ID);
+        if (wordRepository.findById(ID).isPresent()) {
+            return wordRepository.findById(ID).get();
+        }
+        return null;//TODO need better return value in case of error
     }
 
     @Override
