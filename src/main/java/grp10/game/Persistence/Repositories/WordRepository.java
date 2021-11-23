@@ -13,5 +13,7 @@ public interface WordRepository extends JpaRepository<Word, Long> {
     void delete(Word word);
 
     List<Word> findAll();
+    List<Word> findByValue(String value);
+    List<Word> findByGuessed(boolean guessed);
     List<Word> findByID(long ID);
 }

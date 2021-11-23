@@ -18,30 +18,30 @@ public class WordServiceImplementation implements WordService {
         this.wordRepository = wordRepository;
     }
 
-    @Override
-    public Word getWord() {
-        return wordRepository.findAll();
-    }
+    //@Override
+    //public Word getWords() {
+    //    return wordRepository.findAll();
+    //}
 
     @Override
     public Word getWord() {
-        for(Word w: wordRepository){
-            if(!w.isGuessed()) return w;
-        }
-        return null;
+        return wordRepository.findByGuessed(false).get(0);
     }
 
     @Override
     public boolean isDuplicate(Word word) {
-        for(Word w: wordRepository){
-            if(w.getValue().equals(word.getValue())) return false;
+        List<Word> allWords = wordRepository.findAll();
+        for(Word w: allWords){
+            if(w.getValue().equals(word.getValue())) return true;
         }
-        return true;
+        return false;
     }
 
     @Override
     public void setGuessed(Word word) {
+        wordRepository.delete(word);
         word.setGuessed(true);
+        wordRepository.save(word);
     }
 
     @Override
