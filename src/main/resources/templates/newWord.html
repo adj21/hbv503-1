@@ -5,13 +5,34 @@
     <title>Add a new Word</title>
 </head>
 <body>
-
-<form action="#" th:action="@{/addword}" th:object="${word}" method="post">
-    <label for="value">Word</label>
-    <input type="text" th:field="*{value}" id="value" placeholder="Word">
-    <span th:if="${#fields.hasErrors('value')}" th:errors="*{value}"></span>
-    <input type="submit" value="Add Word">
-</form>
-
+<div th:switch="${playerTotal}">
+    <div th:case="0">
+        <p>All players have entered their words, click on "Start round 1!".</p>
+        <form action="#" th:action="@{/startRound}" method="post">
+            <input type="submit" value="Start round 1!">
+        </form>
+    </div>
+    <div th:case="*">
+        <div th:switch="${wordCount}">
+            <p th:case="null">There was an error, go back to the homepage to restart the game</p>
+            <div th:case="0">
+                <p>pass the device to your teammate, then  click on "next!".</p>
+                <form action="#" th:action="@{/addFiveWords}" method="post">
+                    <input type="submit" value="next!">
+                </form>
+            </div>
+            <div th:case="*">
+                <p><span th:text="${playerTotal}">players</span> players still need to enter words <br></br>
+                    Find <span th:text="${wordCount}">wordCount</span> more words to be used for the game, enter one of those bellow:</p>
+                <form action="#" th:action="@{/addword}" th:object="${word}" method="post">
+                    <!--<label for="value">Word</label>-->
+                    <input type="text" th:field="*{value}" id="value1" placeholder="Word">
+                        <span th:if="${#fields.hasErrors('value')}" th:errors="*{value}"></span>
+                    <input type="submit" value="Add Word">
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 </body>
 </html>
