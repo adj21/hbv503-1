@@ -15,4 +15,5 @@ public interface WordService {
     Word findByID(long ID);
     Word save(Word word);
     void delete(Word word);
+    void deleteAll();
 }

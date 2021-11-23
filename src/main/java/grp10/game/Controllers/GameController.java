@@ -1,6 +1,8 @@
 package grp10.game.Controllers;
 
 import grp10.game.Persistence.Entities.Game;
+import grp10.game.Persistence.Entities.Round;
+import grp10.game.Persistence.Entities.Turn;
 import grp10.game.Persistence.Entities.Word;
 import grp10.game.Services.WordService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -45,6 +48,7 @@ public class GameController {
      **/
     @RequestMapping(value="/startgame", method = RequestMethod.GET) public String startGame(HttpSession session, Model model) {
         //business logic
+        wordService.deleteAll();
         Game game = new Game();
         session.setAttribute("game", game); //stores the game object on the session
         model.addAttribute("game",game);//puts the game object on the model to be accessible by the form in formTeams to save the player count.
@@ -90,38 +94,9 @@ public class GameController {
         model.addAttribute("wordCount", session.getAttribute("wordCount"));//put wordCount on the model to be displayed
         Game game = (Game) session.getAttribute("game");//retrieve game object
         model.addAttribute("playerTotal", game.getPlayerTotal());//put playerTotal on the model to be displayed
+        List<Word> allWords = wordService.findAll();
+        model.addAttribute("words", allWords);
         return "newWord";
-    }
-
-    /**
-     * POST method called when submitting form in newWord template (saves word on database)
-     * @param word to add to database (should be 5)
-     * @param session to get and update wordCount
-     * @param result TODO should tell us if there are errors in the form submitted, check newWord template
-     * @return redirects to addword to add next word or to "/" URL (so calls homePage method) if there is an error.
-     **/
-    @RequestMapping(value="/addword", method = RequestMethod.POST) public String addWord(Word word, HttpSession session, BindingResult result) {
-        //if(result.hasErrors()) return "newWord"; //reset page if error in form TODO figure out how result.hasErrors works
-        int wordCount = (int) session.getAttribute("wordCount");//get wordCount from session
-        Game game = (Game) session.getAttribute("game");
-        if((wordCount == 1) && (game.getPlayerTotal() == 1)) {//if the last user was entering the last word
-            wordCount=0;//last word was added to database, so wordCount=0
-            session.setAttribute("wordCount", wordCount);//update wordCount on session
-            game.setPlayerTotal(0);//no more players need to enter words
-            session.setAttribute("game", game);//update game object with correct playerTotal
-            return "redirect:/addword";//send to /addword to display view prompting the beginning of round 1
-        }
-        else if(wordCount>=0) {//check that user didn't enter already 5 words
-            //TODO check if word already exists in database
-            //TODO check that word is not empty string
-            wordService.save(word);//save word to database
-            wordCount--;//decrement wordCount (since a word is being added to the database)
-            session.setAttribute("wordCount", wordCount);//update wordCount on session
-            return "redirect:/addword";//send user to add next word
-        }
-        else  {//if user entered all 5 words already and is trying to add more words (thymeleaf currently prevents this)
-            return "redirect:/";//redirect to homepage if player tried to enter more than 5 words
-        }
     }
 
     /**
@@ -132,7 +107,12 @@ public class GameController {
     @RequestMapping(value="/startRound", method = RequestMethod.POST) public String startRound(HttpSession session) {
         //business logic
         Game game = (Game) session.getAttribute("game");//get game from session
-        game.incrementCurrentRound(); //adds +1 to the CurrentRound attribute of the game (TODO should implement and call method from service class do to this)
+        game.incrementCurrentRound(); //adds +1 to the CurrentRound attribute of the game (TODO should implement and call method from service class do to this, and have different page for each round)
+        //create round object from current round number, retrieve list of rounds from game and add new round to it
+        Round round = new Round(game.getCurrentRound());
+        List<Round> rounds = game.getRounds();
+        rounds.add(round);
+        game.setRounds(rounds);//update game object with new round
         session.setAttribute("game", game);//add game to the session
         return "redirect:/round";//display round page
     }
@@ -150,27 +130,23 @@ public class GameController {
     }
 
     /**
-     * GET method called when viewing the round rules page
+     * POST method called when starting a turn
      * @param session that stores the game object
-     * @param model to transfer the round number to the view
-     * @return round html template
+     * @param model to transfer the word to the view
+     * @return turn html template
      **/
-    @RequestMapping(value="/startTurn", method = RequestMethod.POST) public String displayTurn() {
-        //TODO intialize the turn object
-        //TODO get a word from database with wordService.getword()
-        //TODO add that word to the list of words in turn
+    @RequestMapping(value="/startTurn", method = RequestMethod.POST) public String displayTurn(HttpSession session, Model model) {
+        //get playing team from session
+        Game game = (Game) session.getAttribute("game");
+        boolean team = game.isCurrentTeam();
+        //create turn and add word to it
+        Turn turn = new Turn(team);
+        Word word = wordService.getWord();
+        List<Word> turnWords = new ArrayList<Word>();
+        turnWords.add(word);
+        turn.setWords(turnWords);
+        model.addAttribute("word", word);
         return "turn";//display turn template
-    }
-
-    /**
-     * GET method to delete word from database, might not be needed (unused for now)!
-     * @param id of the word to delete
-     * @return redirects to "/" URL (so calls homePage method)
-     **/
-    @RequestMapping(value="/delete/{id}", method = RequestMethod.GET) public String deleteWord(@PathVariable("id") long id) {
-        Word wordToDelete = wordService.findByID(id); //finds word to delete in the database
-        wordService.delete(wordToDelete); //method from service class to delete word
-        return "redirect:/";
     }
 
 }

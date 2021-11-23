@@ -24,6 +24,9 @@ public class WordServiceImplementation implements WordService {
     }
 
     @Override
+    public void deleteAll() { wordRepository.deleteAll();}
+
+    @Override
     public boolean isDuplicate(Word word) {
         List<Word> allWords = wordRepository.findAll();
         for(Word w: allWords){

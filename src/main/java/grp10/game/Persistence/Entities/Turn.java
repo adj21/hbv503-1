@@ -5,14 +5,12 @@ import java.util.List;
 
 public class Turn {
     private boolean team;
-    private int turnNumber;
-    private LocalTime turnStartTime;
+    //private int turnNumber;
     private List<Word> words;
 
-    public Turn(boolean team, int turnNumber, LocalTime turnStartTime) {
+    public Turn(boolean team/*, int turnNumber,*/) {
         this.team = team;
-        this.turnNumber = turnNumber;
-        this.turnStartTime = turnStartTime;
+        //this.turnNumber = turnNumber;
     }
 
     public boolean isTeam() {
@@ -23,21 +21,13 @@ public class Turn {
         this.team = team;
     }
 
-    public int getTurnNumber() {
+    /*public int getTurnNumber() {
         return turnNumber;
     }
 
     public void setTurnNumber(int turnNumber) {
         this.turnNumber = turnNumber;
-    }
-
-    public LocalTime getTurnStartTime() {
-        return turnStartTime;
-    }
-
-    public void setTurnStartTime(LocalTime turnStartTime) {
-        this.turnStartTime = turnStartTime;
-    }
+    }*/
 
     public List<Word> getWords() {
         return words;

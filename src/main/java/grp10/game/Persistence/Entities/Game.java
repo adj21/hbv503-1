@@ -1,11 +1,13 @@
 package grp10.game.Persistence.Entities;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Game {
     private int teamOneResults;
     private int teamTwoResults;
     private int currentRound;
+    private boolean currentTeam;
     private List<Round> rounds;
     private int playerTotal;
 
@@ -15,6 +17,16 @@ public class Game {
         this.teamTwoResults = 0;
         this.currentRound = 0;
         this.playerTotal = 0;
+        this.currentTeam = false;
+        this.rounds = new ArrayList<Round>();
+    }
+
+    public boolean isCurrentTeam() {
+        return this.currentTeam;
+    }
+
+    public void setCurrentTeam(boolean currentTeam) {
+        this.currentTeam = currentTeam;
     }
 
     public List<Round> getRounds() {
