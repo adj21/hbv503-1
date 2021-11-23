@@ -150,6 +150,19 @@ public class GameController {
     }
 
     /**
+     * GET method called when viewing the round rules page
+     * @param session that stores the game object
+     * @param model to transfer the round number to the view
+     * @return round html template
+     **/
+    @RequestMapping(value="/startTurn", method = RequestMethod.POST) public String displayTurn() {
+        //TODO intialize the turn object
+        //TODO get a word from database with wordService.getword()
+        //TODO add that word to the list of words in turn
+        return "turn";//display turn template
+    }
+
+    /**
      * GET method to delete word from database, might not be needed (unused for now)!
      * @param id of the word to delete
      * @return redirects to "/" URL (so calls homePage method)

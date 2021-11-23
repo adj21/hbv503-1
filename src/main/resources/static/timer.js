@@ -50,6 +50,7 @@ startTimer();
 
 function onTimesUp() {
     clearInterval(timerInterval);
+    window.location.href = "round"
 }
 
 function startTimer() {
