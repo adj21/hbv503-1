@@ -36,7 +36,7 @@ public class WordController {
      * @param session that stores the game object
      * @return redirects to displayRound GET method (to display page for the round rules)
      **/
-    @RequestMapping(value="/skip", method = RequestMethod.POST) public String skip(HttpSession session, Model model) {
+    @RequestMapping(value="/skip", method = RequestMethod.POST) public String skipWord(HttpSession session, Model model) {
         Word word = (Word) session.getAttribute("word");
         Word newWord = wordService.getWord();
         session.setAttribute("word", newWord);
@@ -56,7 +56,7 @@ public class WordController {
         return "turn";//TODO need to figure out how to change word on page without restarting timer, and how to not stay on "skip" address (redirect?)
     }
 
-    @RequestMapping(value="/validate", method = RequestMethod.POST) public String validate(HttpSession session, Model model) {
+    @RequestMapping(value="/validate", method = RequestMethod.POST) public String validateWord(HttpSession session, Model model) {
         Word word = (Word) session.getAttribute("word");
         wordService.setGuessed(word);
         Game game = (Game) session.getAttribute("game");
@@ -98,7 +98,7 @@ public class WordController {
     }
 
     /**
-     * GET method to delete word from database, might not be needed (unused for now)!
+     * GET method to delete word from database, Not used for now!
      * @param id of the word to delete
      * @return redirects to "/" URL (so calls homePage method)
      **/

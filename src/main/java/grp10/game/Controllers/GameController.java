@@ -141,11 +141,11 @@ public class GameController {
      * @param model to transfer the word to the view
      * @return turn html template
      **/
-    @RequestMapping(value="/startTurn", method = RequestMethod.POST) public String displayTurn(HttpSession session, Model model) {
+    @RequestMapping(value="/startTurn", method = RequestMethod.POST) public String startTurn(HttpSession session, Model model) {
         //get playing team from session
         Game game = (Game) session.getAttribute("game");
         boolean team = game.isCurrentTeam();
-        game.setCurrentTeam(!team);//CHANGE SMTHING HERE
+        game.setCurrentTeam(!team);
         //create turn and add word to it
         Turn turn = new Turn(team);
         Word word = wordService.getWord();
