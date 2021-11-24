@@ -17,7 +17,7 @@ public class Game {
         this.teamTwoResults = 0;
         this.currentRound = 0;
         this.playerTotal = 0;
-        this.currentTeam = false;
+        this.currentTeam = true;//CHANGED SMTHING HERE
         this.rounds = new ArrayList<Round>();
     }
 

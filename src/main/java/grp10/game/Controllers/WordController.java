@@ -41,6 +41,11 @@ public class WordController {
         Word newWord = wordService.getWord();
         session.setAttribute("word", newWord);
         model.addAttribute("word", newWord);
+        Game game = (Game) session.getAttribute("game");
+        int teamNumber;
+        if (!game.isCurrentTeam()) teamNumber = 1;
+        else teamNumber = 2;
+        model.addAttribute("teamNumber", teamNumber);
         //Word wordToSkip = wordService.findByID(id);
         //create turn and add word to it
         //Game game = (Game) session.getAttribute("game");
@@ -54,15 +59,42 @@ public class WordController {
     @RequestMapping(value="/validate", method = RequestMethod.POST) public String validate(HttpSession session, Model model) {
         Word word = (Word) session.getAttribute("word");
         wordService.setGuessed(word);
-        Word newWord = wordService.getWord();
         Game game = (Game) session.getAttribute("game");
+        if (!game.isCurrentTeam()) {
+            int score1 = game.getTeamOneResults();
+            score1++;
+            game.setTeamOneResults(score1);
+            session.setAttribute("game", game);
+        }
+        else {
+            int score2 = game.getTeamTwoResults();
+            score2++;
+            game.setTeamTwoResults(score2);
+            session.setAttribute("game", game);
+        }
         //Turn turn = game.getRounds().getTurn//get the current round with currentRound from session and curent turn?
         //List<Word> turnWords = turn.getWords();
         //turnWords.add(word);
         //turn.setWords(turnWords);
-        session.setAttribute("word", newWord);
-        model.addAttribute("word", newWord);
-        return "turn";//TODO need to figure out how to change word on page without restarting timer, and how to not stay on "skip" address (redirect?)
+        int teamNumber;
+        if (!game.isCurrentTeam()) teamNumber = 1;
+        else teamNumber = 2;
+        model.addAttribute("teamNumber", teamNumber);
+        if(wordService.isAllGuessed()) {
+            model.addAttribute("roundNumber",game.getCurrentRound());
+            model.addAttribute("teamOneResults", game.getTeamOneResults());
+            model.addAttribute("teamTwoResults", game.getTeamTwoResults());
+            if(game.getTeamOneResults()>game.getTeamTwoResults()) model.addAttribute("winningTeam",1);
+            else if (game.getTeamOneResults()<game.getTeamTwoResults()) model.addAttribute("winningTeam",2);
+            else model.addAttribute("winningTeam",3);
+            return "/endRound";
+        }
+        else {
+            Word newWord = wordService.getWord();
+            session.setAttribute("word", newWord);
+            model.addAttribute("word", newWord);
+            return "turn";
+        }
     }
 
     /**

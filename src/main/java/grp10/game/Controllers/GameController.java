@@ -115,6 +115,7 @@ public class GameController {
         rounds.add(round);
         game.setRounds(rounds);//update game object with new round
         session.setAttribute("game", game);//add game to the session
+        wordService.setAllUnguessed();//set all words unguessed for new round
         return "redirect:/round";//display round page
     }
 
@@ -127,6 +128,10 @@ public class GameController {
     @RequestMapping(value="/round", method = RequestMethod.GET) public String displayRound(HttpSession session, Model model) {
         Game game = (Game) session.getAttribute("game");
         model.addAttribute("roundNumber", game.getCurrentRound()); //adds round number to the model to be retrieved by the view
+        int teamNumber;
+        if (!game.isCurrentTeam()) teamNumber = 2;//inverse numbers since this is the team that played the last turn, not this one (number updated by clicking the button)
+        else teamNumber = 1;
+        model.addAttribute("teamNumber", teamNumber);
         return"round";//display round template
     }
 
@@ -140,6 +145,7 @@ public class GameController {
         //get playing team from session
         Game game = (Game) session.getAttribute("game");
         boolean team = game.isCurrentTeam();
+        game.setCurrentTeam(!team);//CHANGE SMTHING HERE
         //create turn and add word to it
         Turn turn = new Turn(team);
         Word word = wordService.getWord();
@@ -148,7 +154,15 @@ public class GameController {
         turn.setWords(turnWords);
         session.setAttribute("word", word);
         model.addAttribute("word", word);
+        int teamNumber;
+        if (!game.isCurrentTeam()) teamNumber = 1;
+        else teamNumber = 2;
+        model.addAttribute("teamNumber", teamNumber);
         return "turn";//display turn template
+    }
+
+    @RequestMapping(value="/startTie", method = RequestMethod.POST) public String startTie(HttpSession session, Model model) {
+        return "home";
     }
 
 }

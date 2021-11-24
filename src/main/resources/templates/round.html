@@ -27,8 +27,9 @@
         you can also skip a word by pressing the cross.
     </p>
 </div>
+<p>team <span th:text="${teamNumber}">team</span> starts</p>
 <form action="#" th:action="@{/startTurn}" method="post">
-    <input type="submit" value="Team 1 starts">
+    <input type="submit" value="start turn">
 </form>
 </body>
 </html>
