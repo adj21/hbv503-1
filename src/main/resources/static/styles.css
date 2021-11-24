@@ -3,6 +3,7 @@ body {
     display: grid;
     height: 100vh;
     place-items: center;
+    background-color: rgb(253, 234, 59);
 }
 
 .base-timer {
