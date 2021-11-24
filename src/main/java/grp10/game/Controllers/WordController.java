@@ -54,9 +54,9 @@ public class WordController {
     @RequestMapping(value="/validate", method = RequestMethod.POST) public String validate(HttpSession session, Model model) {
         Word word = (Word) session.getAttribute("word");
         wordService.setGuessed(word);
+        Word newWord = wordService.getWord();
         //Game game = (Game) session.getAttribute("game");
         //Turn turn = game.getRounds().getTurn//get the current round with currentRound from session and curent turn?
-        Word newWord = wordService.getWord();
         //List<Word> turnWords = turn.getWords();
         //turnWords.add(word);
         //turn.setWords(turnWords);
