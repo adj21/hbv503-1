@@ -1,2 +1,2 @@
 # Time is running out! 
-##The thrilling party game
+## The thrilling party game
