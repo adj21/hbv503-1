@@ -55,7 +55,7 @@ public class WordController {
         Word word = (Word) session.getAttribute("word");
         wordService.setGuessed(word);
         Word newWord = wordService.getWord();
-        //Game game = (Game) session.getAttribute("game");
+        Game game = (Game) session.getAttribute("game");
         //Turn turn = game.getRounds().getTurn//get the current round with currentRound from session and curent turn?
         //List<Word> turnWords = turn.getWords();
         //turnWords.add(word);
@@ -88,6 +88,7 @@ public class WordController {
         int wordCount = (int) session.getAttribute("wordCount");//get wordCount from session
         Game game = (Game) session.getAttribute("game");
         if((wordCount == 1) && (game.getPlayerTotal() == 1)) {//if the last user was entering the last word
+            wordService.save(word);//save word to database
             wordCount=0;//last word was added to database, so wordCount=0
             session.setAttribute("wordCount", wordCount);//update wordCount on session
             game.setPlayerTotal(0);//no more players need to enter words
