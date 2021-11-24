@@ -6,6 +6,11 @@ body {
     background-color: rgb(253, 234, 59);
 }
 
+
+#divCounter {
+    font-family: "Arial Black";
+    font-size: 36px;
+}
 .base-timer {
     position: relative;
     width: 300px;
