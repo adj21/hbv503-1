@@ -3,8 +3,15 @@ body {
     display: grid;
     height: 100vh;
     place-items: center;
+    background-color: rgb(253, 234, 59);
 }
 
+/* blah */
+
+#divCounter {
+    font-family: "Arial Black";
+    font-size: 36px;
+}
 .base-timer {
     position: relative;
     width: 300px;
