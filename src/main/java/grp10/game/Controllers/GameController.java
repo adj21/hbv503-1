@@ -1,5 +1,6 @@
 package grp10.game.Controllers;
 
+import com.sun.xml.bind.v2.TODO;
 import grp10.game.Persistence.Entities.Game;
 import grp10.game.Persistence.Entities.Round;
 import grp10.game.Persistence.Entities.Turn;
@@ -48,7 +49,7 @@ public class GameController {
      **/
     @RequestMapping(value="/startgame", method = RequestMethod.GET) public String startGame(HttpSession session, Model model) {
         //business logic
-        wordService.deleteAll();
+        wordService.deleteAll(); //TODO instead do this at the end when clicking on "restart"
         Game game = new Game();
         session.setAttribute("game", game); //stores the game object on the session
         model.addAttribute("game",game);//puts the game object on the model to be accessible by the form in formTeams to save the player count.
@@ -145,6 +146,7 @@ public class GameController {
         List<Word> turnWords = new ArrayList<Word>();
         turnWords.add(word);
         turn.setWords(turnWords);
+        session.setAttribute("word", word);
         model.addAttribute("word", word);
         return "turn";//display turn template
     }

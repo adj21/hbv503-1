@@ -20,7 +20,14 @@
 <form action="#" th:action="@{/skip/{id}(id=${word.ID})}}" method="post">
     <input type="submit" value="Skip">
 </form>-->
-<a th:href="@{/skip/{id}(id=${word.ID})}">Skip</a>
+<form action="#" th:action="@{/skip}" method="post">
+    <input type="submit" value="skip">
+</form>
+
+<form action="#" th:action="@{/validate}" method="post">
+    <input type="submit" value="validate">
+</form>
+<!--<a th:href="@{/skip/{id}(id=${word.ID})}">Skip</a>-->
 
 
 </body>

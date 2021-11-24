@@ -30,30 +30,30 @@
                         <span th:if="${#fields.hasErrors('value')}" th:errors="*{value}"></span>
                     <input type="submit" value="Add Word">
                 </form>
-                <div th:switch="${words}">
-                    <h2 th:case="null">No words yet!</h2>
-                    <div th:case="*">
-                        <h2>Words</h2>
-                        <table>
-                            <thead>
-                            <tr>
-                                <th>word</th>
-                                <th>guessed?</th>
-                                <th>Delete</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr th:each="word : ${words}">
-                                <td th:text="${word.value}"></td>
-                                <td th:text="${word.guessed}"></td>
-                                <td><a th:href="@{/delete/{id}(id=${word.ID})}">Delete</a></td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
             </div>
         </div>
+    </div>
+</div>
+<div th:switch="${words}">
+    <h2 th:case="null">No words yet!</h2>
+    <div th:case="*">
+        <h2>Words</h2>
+        <table>
+            <thead>
+            <tr>
+                <th>word</th>
+                <th>guessed?</th>
+                <th>Delete</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="word : ${words}">
+                <td th:text="${word.value}"></td>
+                <td th:text="${word.guessed}"></td>
+                <td><a th:href="@{/delete/{id}(id=${word.ID})}">Delete</a></td>
+            </tr>
+            </tbody>
+        </table>
     </div>
 </div>
 </body>

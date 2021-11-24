@@ -1,5 +1,6 @@
 package grp10.game.Controllers;
 
+import com.sun.xml.bind.v2.TODO;
 import grp10.game.Persistence.Entities.Game;
 import grp10.game.Persistence.Entities.Round;
 import grp10.game.Persistence.Entities.Turn;
@@ -35,18 +36,33 @@ public class WordController {
      * @param session that stores the game object
      * @return redirects to displayRound GET method (to display page for the round rules)
      **/
-    @RequestMapping(value="/skip/{id}", method = RequestMethod.GET) public String skip(HttpSession session, Model model) {
+    @RequestMapping(value="/skip", method = RequestMethod.POST) public String skip(HttpSession session, Model model) {
+        Word word = (Word) session.getAttribute("word");
+        Word newWord = wordService.getWord();
+        session.setAttribute("word", newWord);
+        model.addAttribute("word", newWord);
         //Word wordToSkip = wordService.findByID(id);
-        //wordService.setUnguessed(wordToSkip); TODO should have a skipped marker so it doesn't come up in the turn again
         //create turn and add word to it
         //Game game = (Game) session.getAttribute("game");
         //Turn turn = game.getRounds().getTurn//get the current round with currentRound from session and curent turn?
-        Word word = wordService.getWord();
         //List<Word> turnWords = turn.getWords();
         //turnWords.add(word);
         //turn.setWords(turnWords);
-        model.addAttribute("word", word);
-        return "turn";//TODO need to figure out how to change word on page without restarting timer, and how to not stay on "skip" address
+        return "turn";//TODO need to figure out how to change word on page without restarting timer, and how to not stay on "skip" address (redirect?)
+    }
+
+    @RequestMapping(value="/validate", method = RequestMethod.POST) public String validate(HttpSession session, Model model) {
+        Word word = (Word) session.getAttribute("word");
+        wordService.setGuessed(word);
+        //Game game = (Game) session.getAttribute("game");
+        //Turn turn = game.getRounds().getTurn//get the current round with currentRound from session and curent turn?
+        Word newWord = wordService.getWord();
+        //List<Word> turnWords = turn.getWords();
+        //turnWords.add(word);
+        //turn.setWords(turnWords);
+        session.setAttribute("word", newWord);
+        model.addAttribute("word", newWord);
+        return "turn";//TODO need to figure out how to change word on page without restarting timer, and how to not stay on "skip" address (redirect?)
     }
 
     /**
@@ -57,7 +73,7 @@ public class WordController {
     @RequestMapping(value="/delete/{id}", method = RequestMethod.GET) public String deleteWord(@PathVariable("id") long id) {
         Word wordToDelete = wordService.findByID(id); //finds word to delete in the database
         wordService.delete(wordToDelete); //method from service class to delete word
-        return "redirect:/";
+        return "redirect:/addword";
     }
 
     /**

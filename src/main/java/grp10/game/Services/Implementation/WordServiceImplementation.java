@@ -20,6 +20,7 @@ public class WordServiceImplementation implements WordService {
 
     @Override
     public Word getWord() {
+        //List<Word> =
         return wordRepository.findByGuessed(false).get(0);
     }
 
@@ -37,9 +38,9 @@ public class WordServiceImplementation implements WordService {
 
     @Override
     public void setGuessed(Word word) {
-        wordRepository.delete(word);
+        delete(word);
         word.setGuessed(true);
-        wordRepository.save(word);
+        save(word);
     }
 
     @Override

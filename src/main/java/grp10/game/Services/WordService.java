@@ -16,4 +16,5 @@ public interface WordService {
     Word save(Word word);
     void delete(Word word);
     void deleteAll();
+
 }
